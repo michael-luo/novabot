@@ -1,4 +1,4 @@
-# client
+# twitch-stellar-bot client
 
 > A Vue.js project
 
