@@ -28,7 +28,7 @@ module.exports = (app, passport) => {
     }
   })
 
-  app.get('/auth/twitch', passport.authenticate('twitch'))
+  app.get('/api/auth/twitch', passport.authenticate('twitch'))
 
   app.get('/auth/twitch/callback', passport.authenticate('twitch', { failureRedirect: '/'}), (req, res) => {
     redirectHome(res)
