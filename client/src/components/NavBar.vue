@@ -3,13 +3,12 @@
     <b-navbar toggleable="md" type="dark" variant="info" fixed="top">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="#">StellarBot</b-navbar-brand>
+      <b-navbar-brand href="/dashboard">StellarBot</b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse">
 
         <b-navbar-nav>
-          <b-nav-item href="#" disabled>Balance</b-nav-item>
-          <b-nav-item href="#">Transactions</b-nav-item>
+          <b-nav-item href="/dashboard">Dashboard</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -17,10 +16,9 @@
           <b-nav-item-dropdown right>
             <!-- Using button-content slot -->
             <template slot="button-content">
-              User
+              {{ user.displayName }}
             </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Signout</b-dropdown-item>
+            <b-dropdown-item><router-link to="/logout">Signout</router-link></b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
@@ -30,20 +28,8 @@
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-
 export default {
-  name: 'navbar',
-
-  data () {
-    return {}
-  },
-
-  mounted () {},
-
-  methods: {
-    async getActiveTab () {}
-  }
+  props: ['user'],
+  name: 'navbar'
 }
 </script>

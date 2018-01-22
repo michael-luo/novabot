@@ -5,12 +5,8 @@ import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import router from './router'
 
-import NavBar from '@/components/NavBar'
-
-Vue.config.productionTip = false
-
 Vue.use(BootstrapVue)
-Vue.component('navbar', NavBar)
+Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
