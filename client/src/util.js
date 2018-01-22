@@ -5,5 +5,5 @@ export default {
 
   LOGIN_URL: `${BASE_URL}/auth/twitch`,
 
-  LOGOUT_URL: `${BASE_URL}/logout`
+  LOGOUT_URL: `${BASE_URL}/api/logout`
 }

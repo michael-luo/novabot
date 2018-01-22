@@ -16,7 +16,7 @@ module.exports = (app, passport) => {
     next()
   })
 
-  app.get('/self', (req, res) => {
+  app.get('/api/self', (req, res) => {
     if(req.user) {
       res.json(req.user)
     } else {
@@ -34,7 +34,7 @@ module.exports = (app, passport) => {
     redirectHome(res)
   })
 
-  app.get('/logout', function(req, res){
+  app.get('/api/logout', function(req, res){
     req.logout();
     redirectHome(res)
   });
