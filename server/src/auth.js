@@ -1,19 +1,13 @@
 const passport = require('passport')
 const TwitchStrategy = require('passport-twitch').Strategy
 
-// Retrieve our encrypted secrets depending on the environment
-const config = require('config')
-
 // Postgresql connection
-var knex = require('knex')({
-  client: 'pg',
-  connection: config.get('postgres')
-});
+var knex = require('./knex')
 
 passport.use(new TwitchStrategy({
-  clientID: config.get('twitch.clientID'),
-  clientSecret: config.get('twitch.clientSecret'),
-  callbackURL: config.get('twitch.authCallbackURL'),
+  clientID: process.env.TWITCH_CLIENT_ID,
+  clientSecret: process.env.TWITCH_CLIENT_SECRET,
+  callbackURL: process.env.TWITCH_CALLBACK_URL,
   scope: 'user_read'
 }, (accessToken, refreshToken, profile, done) => {
   // Upsert into users table

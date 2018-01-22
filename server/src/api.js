@@ -1,12 +1,7 @@
-// Configs
-const config = require('config')
-
-var knex = require('knex')({
-  client: 'pg',
-  connection: config.get('postgres')
-});
+const knex = require('./knex')
 
 const clientHome = 'http://localhost:8080'
+
 const redirectHome = (res) => {
   if(process.env.NODE_ENV === 'production') return res.redirect('/')
   res.redirect(clientHome)

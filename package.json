@@ -12,10 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "1.18.2",
-    "config": "1.29.2",
     "cookie-parser": "1.4.3",
     "cookie-session": "2.0.0-beta.3",
     "cors": "2.8.4",
+    "dotenv": "4.0.0",
     "express": "4.16.2",
     "knex": "0.14.2",
     "morgan": "1.9.0",

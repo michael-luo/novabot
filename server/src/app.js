@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}  
+
 // Web framework
 const express = require('express')
 
