@@ -2,6 +2,7 @@
 
 ## Config Files Format
 
+```javascript
 {
   "twitch": {
     "clientID": "X",
@@ -15,3 +16,4 @@
     "database": "X"
   }
 }
+```
