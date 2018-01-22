@@ -38,7 +38,7 @@ require('./api')(app, passport)
 
 const port = 8081
 const server = app.listen(process.env.PORT || port, () => {
-	let address = server.address().address
-	if(address === '::') address = 'localhost'
-	console.log(`Server started on http://${address}:${server.address().port}`)
+  let address = server.address().address
+  if(address === '::') address = 'localhost'
+  console.log(`Server started on http://${address}:${server.address().port}`)
 })
