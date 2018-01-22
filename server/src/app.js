@@ -1,6 +1,6 @@
 if(process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
-}  
+}
 
 // Web framework
 const express = require('express')
@@ -31,10 +31,16 @@ app.use(cookieParser());
 app.use(cookieSession({'secret': 'nuclear'}));
 app.use(passport.initialize());
 app.use(passport.session())
-app.use(cors({
-  origin: 'http://localhost:8080',
-  credentials: true
-}))
+
+if(process.env.NODE_ENV !== 'production') {
+  app.use(cors({
+    origin: 'http://localhost:8080',
+    credentials: true
+  }))
+} else {
+  app.use(cors())
+}
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Set up the API routes, auth, and business logic
