@@ -35,7 +35,7 @@ app.use(cors({
   origin: 'http://localhost:8080',
   credentials: true
 }))
-app.use(express.static(path.join(__dirname + '/../../client/dist')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up the API routes, auth, and business logic
 require('./api')(app, passport)
