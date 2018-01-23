@@ -24,21 +24,26 @@ const morgan = require('morgan')
 // For serving our Vue.js frontend
 const path = require('path')
 
+// Middleware to proxy requests through a specified index page
+// Need for this SPA that uses the HTML5 History API
+const history = require('connect-history-api-fallback');
+
 const app = express()
 app.use(morgan('combined'))
 app.use(bodyParser.json())
-app.use(cookieParser());
-app.use(cookieSession({'secret': 'nuclear'}));
-app.use(passport.initialize());
+app.use(cookieParser())
+app.use(cookieSession({'secret': 'nuclear'}))
+app.use(passport.initialize())
 app.use(passport.session())
 
-if(process.env.NODE_ENV !== 'production') {
+if(process.env.NODE_ENV === 'production') {
+  app.use(history())
+  app.use(cors())
+} else {
   app.use(cors({
     origin: 'http://localhost:8080',
     credentials: true
   }))
-} else {
-  app.use(cors())
 }
 
 app.use(express.static(path.join(__dirname, 'dist')));

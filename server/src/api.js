@@ -1,10 +1,11 @@
 const knex = require('./knex')
 
-const clientHome = 'http://localhost:8080'
-
 const redirectHome = (res) => {
-  if(process.env.NODE_ENV === 'production') return res.redirect('/')
-  res.redirect(clientHome)
+  if(process.env.NODE_ENV === 'production') {
+    res.redirect('/')
+  } else {
+    res.redirect('http://localhost:8080')
+  }
 }
 
 module.exports = (app, passport) => {
