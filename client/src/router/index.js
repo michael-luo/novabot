@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Dashboard from '@/components/Dashboard'
 import Login from '@/components/Login'
+import NotFound from '@/components/NotFound'
 
 import auth from '../auth'
 
@@ -28,6 +29,10 @@ const routes = [
     beforeEnter (to, from, next) {
       auth.logout()
     }
+  },
+  {
+    path: '*',
+    component: NotFound
   }
 ]
 
