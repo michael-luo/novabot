@@ -3,17 +3,11 @@
 ## Config Files Format
 
 ```javascript
-{
-  "twitch": {
-    "clientID": "X",
-    "clientSecret": "X",
-    "authCallbackURL": "X"
-  },
-  "postgres": {
-    "host": "X",
-    "user": "X",
-    "password": "X",
-    "database": "X"
-  }
-}
+TWITCH_CLIENT_ID=X
+TWITCH_CLIENT_SECRET=X
+TWITCH_CALLBACK_URL=X
+DB_HOST=X
+DB_USER=X
+DB_PASSWORD=X
+DB_NAME=X
 ```
