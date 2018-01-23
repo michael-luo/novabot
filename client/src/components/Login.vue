@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <a v-on:click="Login">Login</a>
+    <a v-on:click="Login">Login with Twitch</a>
   </div>
 </template>
 

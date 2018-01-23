@@ -1,6 +1,5 @@
-if(process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
+u = require('./util')
+u.devOnly(() => require('dotenv').config())
 
 // Web framework
 const express = require('express')
@@ -36,18 +35,23 @@ app.use(cookieSession({'secret': 'nuclear'}))
 app.use(passport.initialize())
 app.use(passport.session())
 
+// Register CORS middleware
+u.devOrProd(
+  () => {
+    app.use(cors({
+      origin: 'http://localhost:8080',
+      credentials: true
+    }))
+  },
+  () => app.use(cors())
+)
+
 // Set up the API routes, auth, and business logic
+// These routes have to register after cors() and before history()
 require('./api')(app, passport)
 
-if(process.env.NODE_ENV === 'production') {
-  app.use(history())
-  app.use(cors())
-} else {
-  app.use(cors({
-    origin: 'http://localhost:8080',
-    credentials: true
-  }))
-}
+// Important: has to be registered after API routes!
+u.prodOnly(() => app.use(history()))
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
