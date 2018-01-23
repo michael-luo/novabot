@@ -1,9 +1,5 @@
-const BASE_URL = 'http://localhost:8081'
-
 export default {
-  API_HOST: BASE_URL,
+  LOGIN_URL: `${process.env.API_URL}/auth/twitch`,
 
-  LOGIN_URL: `/api/auth/twitch`,
-
-  LOGOUT_URL: `/api/logout`
+  LOGOUT_URL: `${process.env.API_URL}/logout`
 }

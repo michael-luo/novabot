@@ -16,7 +16,7 @@ module.exports = (app, passport) => {
     next()
   })
 
-  app.get('/api/self', (req, res) => {
+  app.get('/self', (req, res) => {
     if(req.user) {
       res.json(req.user)
     } else {
@@ -28,13 +28,13 @@ module.exports = (app, passport) => {
     }
   })
 
-  app.get('/api/auth/twitch', passport.authenticate('twitch'))
+  app.get('/auth/twitch', passport.authenticate('twitch'))
 
   app.get('/auth/twitch/callback', passport.authenticate('twitch', { failureRedirect: '/'}), (req, res) => {
     redirectHome(res)
   })
 
-  app.get('/api/logout', function(req, res){
+  app.get('/logout', function(req, res){
     req.logout();
     redirectHome(res)
   });
