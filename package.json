@@ -23,6 +23,7 @@
     "nodemon": "1.14.11",
     "passport": "0.4.0",
     "passport-twitch": "1.0.3",
-    "pg": "7.4.1"
+    "pg": "7.4.1",
+    "serve-favicon": "2.4.5"
   }
 }

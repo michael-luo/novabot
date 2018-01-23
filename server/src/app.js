@@ -28,6 +28,11 @@ const path = require('path')
 const history = require('connect-history-api-fallback');
 
 const app = express()
+
+// Set up favicon
+const favicon = require('serve-favicon')
+app.use(favicon(path.join(__dirname, 'dist/static/img/favicon.ico')))
+
 app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cookieParser())
