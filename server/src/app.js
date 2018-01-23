@@ -36,6 +36,9 @@ app.use(cookieSession({'secret': 'nuclear'}))
 app.use(passport.initialize())
 app.use(passport.session())
 
+// Set up the API routes, auth, and business logic
+require('./api')(app, passport)
+
 if(process.env.NODE_ENV === 'production') {
   app.use(history())
   app.use(cors())
@@ -47,9 +50,6 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 app.use(express.static(path.join(__dirname, 'dist')));
-
-// Set up the API routes, auth, and business logic
-require('./api')(app, passport)
 
 const port = 8081
 const server = app.listen(process.env.PORT || port, () => {
