@@ -1,6 +1,11 @@
 <template>
   <div class="login">
-    <a v-on:click="Login">Login with Twitch</a>
+    <div>
+      <b-button variant="primary" v-bind:style="buttonStyle"  v-on:click="Login">
+        <b-img width="25" height="25" left src="static/img/twitch.png" />
+        &nbsp; Login with Twitch
+      </b-button>
+    </div>
   </div>
 </template>
 
@@ -12,7 +17,7 @@ export default {
   data () {
     return {}
   },
-  mounted () {},
+
   methods: {
     async Login () {
       auth.login()
@@ -20,3 +25,19 @@ export default {
   }
 }
 </script>
+
+<style>
+.btn {
+  cursor: pointer;
+}
+
+.btn-primary {
+  color: white;
+  background-color: black;
+  border-color: purple;
+}
+
+.btn-primary:hover {
+  background: black
+}
+</style>

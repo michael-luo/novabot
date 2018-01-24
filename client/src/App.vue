@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <navbar v-if="user" :user="user"></navbar>
+    <navbar v-if="shouldDisplay" :user="user"></navbar>
     <router-view :user="user"></router-view>
   </div>
 </template>
@@ -37,6 +37,12 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    }
+  },
+
+  computed: {
+    shouldDisplay () {
+      return this.user && this.$route.path !== '/login'
     }
   }
 }
