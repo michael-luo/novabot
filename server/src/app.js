@@ -31,6 +31,7 @@ const app = express()
 
 // Set up favicon
 const favicon = require('serve-favicon')
+app.use(express.static(path.join(__dirname, 'dist')));
 app.use(favicon(path.join(__dirname, 'dist/static/img/favicon.ico')))
 
 app.use(morgan('combined'))
@@ -57,8 +58,6 @@ require('./api')(app, passport)
 
 // Important: has to be registered after API routes!
 u.prodOnly(() => app.use(history()))
-
-app.use(express.static(path.join(__dirname, 'dist')));
 
 const port = 8081
 const server = app.listen(process.env.PORT || port, () => {
