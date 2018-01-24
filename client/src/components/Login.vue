@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div>
-      <b-button variant="primary" v-bind:style="buttonStyle"  v-on:click="Login">
+      <b-button variant="primary" v-on:click="Login">
         <b-img width="25" height="25" left src="static/img/twitch.png" />
         &nbsp; Login with Twitch
       </b-button>
