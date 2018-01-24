@@ -1,0 +1,13 @@
+.btn-twitch.btn {
+  cursor: pointer;
+}
+
+.btn-twitch.btn-primary {
+  color: white;
+  background-color: black;
+  border-color: purple;
+}
+
+.btn-twitch.btn-primary:hover {
+  background: black
+}

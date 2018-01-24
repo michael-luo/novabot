@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <b-button class="btn-twitch" variant="primary" v-on:click="Login">
+    <b-button class="btn-twitch" variant="primary" v-on:click="login">
       <b-img width="25" height="25" left src="static/img/twitch.png" />
       &nbsp; Login with Twitch
     </b-button>
@@ -17,7 +17,7 @@ export default {
   },
 
   methods: {
-    async Login () {
+    async login () {
       auth.login()
     }
   }
@@ -25,17 +25,5 @@ export default {
 </script>
 
 <style>
-.btn-twitch.btn {
-  cursor: pointer;
-}
 
-.btn-twitch.btn-primary {
-  color: white;
-  background-color: black;
-  border-color: purple;
-}
-
-.btn-twitch.btn-primary:hover {
-  background: black
-}
 </style>

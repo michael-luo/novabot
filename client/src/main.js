@@ -5,6 +5,8 @@ import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import router from './router'
 
+require('./assets/css/button.css')
+
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 

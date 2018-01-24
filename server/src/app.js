@@ -57,7 +57,6 @@ require('./api')(app, passport)
 
 // Important: has to be registered after API routes!
 u.prodOnly(() => app.use(history()))
-
 app.use(express.static(path.join(__dirname, 'dist')));
 
 const port = 8081
