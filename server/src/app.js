@@ -1,5 +1,7 @@
 u = require('./util')
-u.devOnly(() => require('dotenv').config())
+
+environ = require('./env')
+u.devOnly(() => environ.init())
 
 // Web framework
 const express = require('express')
