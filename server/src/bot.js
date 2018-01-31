@@ -9,11 +9,15 @@ const bot = new TwitchBot({
 
 bot.on('join', channel => {
   log.info('Bot joined: %s', JSON.stringify(channel))
+})
 
-  bot.on('message', chatter => {
-    log.info({ message: chatter })
-    bot.say(chatter.message, chatter.channel)
-  })
+bot.on('message', chatter => {
+  log.info({ message: chatter })
+  bot.say(chatter.message, chatter.channel)
+})
+
+bot.on('error', err => {
+  log.error({ error: err })
 })
 
 module.exports = bot
