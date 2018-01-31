@@ -65,7 +65,10 @@ module.exports = (app, passport) => {
   app.post('/bot/join', ensureAuth, (req, res) => {
     if(req.user.username) {
       bot.join(req.user.username)
-      return res.json({'success': true})
+      return res.json({
+        success: true,
+        username: req.user.username
+      })
     } else {
       return res.status(400).json(bad('Authenticated user invalid username'))
     }

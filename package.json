@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/nodemon/bin/nodemon.js server/src/app.js",
+    "start": "./node_modules/nodemon/bin/nodemon.js server/src/app.js | ./node_modules/.bin/bunyan",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "1.18.2",
+    "bunyan": "1.8.12",
     "connect-history-api-fallback": "1.5.0",
     "cookie-parser": "1.4.3",
     "cookie-session": "2.0.0-beta.3",
@@ -25,6 +26,6 @@
     "passport-twitch": "1.0.3",
     "pg": "7.4.1",
     "serve-favicon": "2.4.5",
-    "twitch-bot": "git+https://github.com/michael-luo/twitch-bot.git"
+    "twitch-bot": "1.2.2"
   }
 }
