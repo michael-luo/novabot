@@ -65,12 +65,19 @@ module.exports = (app, passport) => {
   app.post('/bot/join', ensureAuth, (req, res) => {
     if(req.user.username) {
       bot.join(req.user.username)
-      return res.json({
-        success: true,
-        username: req.user.username
-      })
+      return res.status(204).send()
     } else {
-      return res.status(400).json(bad('Authenticated user invalid username'))
+      return res.status(400).json(bad('Unable to join invalid channel name'))
+    }
+  })
+
+  // Have the bot leave the authenticated user's channel
+  app.post('/bot/part', ensureAuth, (req, res) => {
+    if(req.user.username) {
+      bot.part(req.user.username)
+      return res.status(204).send()
+    } else {
+      return res.status(400).json(bad('Unable to part invalid channel name'))
     }
   })
 }

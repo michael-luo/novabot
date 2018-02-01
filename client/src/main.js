@@ -4,10 +4,12 @@ import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import router from './router'
+import ToggleButton from 'vue-js-toggle-button'
 
 require('./assets/css/button.css')
 
 Vue.use(BootstrapVue)
+Vue.use(ToggleButton)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

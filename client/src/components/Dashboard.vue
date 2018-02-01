@@ -1,9 +1,14 @@
 <template>
   <div class="dashboard">
-    <b-button class="btn-twitch" variant="primary" v-on:click="joinChannel">
-      <b-img width="25" height="25" left src="static/img/twitch.png" />
-      &nbsp; Bot Join Channel
-    </b-button>
+    <toggle-button id="bot-toggle"
+                   :value="false"
+                   color="#82C7EB"
+                   :sync="true"
+                   :labels="{checked: 'Bot Enabled', unchecked: 'Bot Disabled'}"
+                   :width="140"
+                   :height="40"
+                   :speed="500"
+                   @change="onToggleEventHandler"/>
   </div>
 </template>
 
@@ -23,12 +28,29 @@ export default {
   methods: {
     async joinChannel () {
       try {
-        const response = await BotsService.joinChannel()
-        console.log(response.data)
+        await BotsService.joinChannel()
       } catch (e) {
         console.log(e)
       }
+    },
+
+    async partChannel () {
+      try {
+        await BotsService.partChannel()
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    onToggleEventHandler (event) {
+      event.value ? this.joinChannel() : this.partChannel()
     }
   }
 }
 </script>
+
+<style>
+.vue-js-switch#bot-toggle {
+  font-size: 14px;
+}
+</style>
