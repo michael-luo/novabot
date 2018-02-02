@@ -1,5 +1,4 @@
-var bunyan = require('bunyan');
-var log = bunyan.createLogger({name: 'theStellarBot'});
+const log = require('./log')
 
 const TwitchBot = require('twitch-bot')
 const bot = new TwitchBot({

@@ -1,4 +1,4 @@
-const knex = require('./knex')
+const knex = require('./models/knex')
 const bot = require('./bot')
 
 const redirectHome = (res) => {

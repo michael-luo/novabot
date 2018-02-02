@@ -1,8 +1,9 @@
 const passport = require('passport')
 const TwitchStrategy = require('passport-twitch').Strategy
+const log = require('./log')
 
 // Postgresql connection
-var knex = require('./knex')
+var knex = require('./models/knex')
 
 passport.use(new TwitchStrategy({
   clientID: process.env.TWITCH_CLIENT_ID,
@@ -20,8 +21,21 @@ passport.use(new TwitchStrategy({
       updated_at = now() at time zone 'utc'
     WHERE users.twitch_id = '${profile.id}'
     RETURNING *`)
-  .then((rows, err) => {
-    return done(err, profile)
+  .then((resp, err) => {
+
+    log.info({ upsert_user: resp.rows })
+    knex.raw(`
+      INSERT INTO settings
+        (user_id, twitch_id)
+      VALUES
+        (${resp.rows[0].id}, ${profile.id})
+      ON CONFLICT (user_id) DO NOTHING
+      RETURNING *`)
+    .then((resp, err) => {
+
+      log.info({ upsert_settings: resp })
+      return done(err, profile)
+    })
   })
 }))
 
