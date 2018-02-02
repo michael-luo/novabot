@@ -4,6 +4,10 @@ class BaseModel {
   constructor() {
     this.db = db
   }
+
+  static get db() {
+    return db
+  }
 }
 
 module.exports = BaseModel

@@ -1,5 +1,7 @@
 const knex = require('./models/knex')
 const bot = require('./bot')
+const log = require('./log')
+const Setting = require('./models/setting')
 
 const redirectHome = (res) => {
   if(process.env.NODE_ENV === 'production') {
@@ -36,9 +38,7 @@ const ensureAuth = (req, res, next) => {
 module.exports = (app, passport) => {
   // Attach dependencies to each request
   app.use((req, res, next) => {
-    req.clients = {
-      pg: knex
-    }
+    req.knex = knex
     next()
   })
 
@@ -79,6 +79,16 @@ module.exports = (app, passport) => {
     } else {
       return res.status(400).json(bad('Unable to part invalid channel name'))
     }
+  })
+
+  app.get('/settings', (req, res) => {
+    Setting.byTwitchID('159591627')
+      .then(s => {
+        log.info({ settingsAPIResponse: s })
+        return res.json({
+          settings: s
+        })
+      })
   })
 }
 

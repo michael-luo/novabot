@@ -21,9 +21,13 @@ passport.use(new TwitchStrategy({
       updated_at = now() at time zone 'utc'
     WHERE users.twitch_id = '${profile.id}'
     RETURNING *`)
-  .then((resp, err) => {
+  .then(resp => {
+    log.info({
+      upsert_user: {
+        rows: resp.rows
+      }
+    })
 
-    log.info({ upsert_user: resp.rows })
     knex.raw(`
       INSERT INTO settings
         (user_id, twitch_id)
@@ -31,11 +35,23 @@ passport.use(new TwitchStrategy({
         (${resp.rows[0].id}, ${profile.id})
       ON CONFLICT (user_id) DO NOTHING
       RETURNING *`)
-    .then((resp, err) => {
+    .then(resp => {
 
-      log.info({ upsert_settings: resp })
+      log.info({
+        upsert_settings: {
+          resp: resp.rows
+        }
+      })
+      return done(null, profile)
+    })
+    .catch(err => {
+      log.error(err)
       return done(err, profile)
     })
+  })
+  .catch(err => {
+    log.error(err)
+    return done(err, profile)
   })
 }))
 
