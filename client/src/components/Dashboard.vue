@@ -1,44 +1,60 @@
 <template>
   <div class="dashboard">
     <toggle-button id="bot-toggle"
-                   :value="false"
+                   :value="botEnabled"
                    color="#82C7EB"
                    :sync="true"
                    :labels="{checked: 'Bot Enabled', unchecked: 'Bot Disabled'}"
                    :width="140"
                    :height="40"
-                   :speed="500"
+                   :speed="120"
                    @change="onToggleEventHandler"/>
   </div>
 </template>
 
 <script>
 import BotsService from '@/services/BotsService'
+import SettingsService from '@/services/SettingsService'
 
 export default {
   props: ['user'],
   name: 'dashboard',
 
   data () {
-    return {}
+    return {
+      botEnabled: false
+    }
   },
 
-  mounted () {},
+  mounted () {
+
+  },
+
+  created () {
+    SettingsService.getSettings()
+      .then(resp => {
+        const settings = resp.data.settings
+        this.botEnabled = settings && settings.botEnabled
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
 
   methods: {
     async joinChannel () {
       try {
         await BotsService.joinChannel()
-      } catch (e) {
-        console.log(e)
+      } catch (err) {
+        console.log(err)
       }
     },
 
     async partChannel () {
       try {
         await BotsService.partChannel()
-      } catch (e) {
-        console.log(e)
+      } catch (err) {
+        console.log(err)
       }
     },
 

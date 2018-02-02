@@ -81,8 +81,8 @@ module.exports = (app, passport) => {
     }
   })
 
-  app.get('/settings', (req, res) => {
-    Setting.byTwitchID('159591627')
+  app.get('/settings', ensureAuth, (req, res) => {
+    Setting.byTwitchID(req.user.id)
       .then(s => {
         log.info({ settingsAPIResponse: s })
         return res.json({
