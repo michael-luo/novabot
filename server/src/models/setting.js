@@ -17,10 +17,6 @@ class Setting extends BaseModel {
         log.info({ settingRows: rows })
         return Setting.fromRows(rows)
       })
-      .catch(err => {
-        log.error(err)
-        return null
-      })
   }
 
   static fromRows(rows) {

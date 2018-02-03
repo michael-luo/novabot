@@ -27,6 +27,14 @@ const bad = (msg) => {
   }
 }
 
+const server_err = (msg) => {
+  return {
+    error: 'Internal Server Error',
+    message: msg,
+    status: 500
+  }
+}
+
 const ensureAuth = (req, res, next) => {
   if(!req.user) {
     return res.status(401).json(forbidden('Client must be authenticated'))
@@ -88,6 +96,10 @@ module.exports = (app, passport) => {
         return res.json({
           settings: s
         })
+      })
+      .catch(err => {
+        log.error({ settingsAPIResponseError: err.toString() })
+        return res.status(500).json(server_err(err.toString()))
       })
   })
 }
