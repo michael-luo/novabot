@@ -31,3 +31,8 @@ create unique index if not exists settings_user_id_uindex
 
 create unique index if not exists settings_twitch_id_uindex
   on settings (twitch_id);
+
+-- Add twitch username to users table
+alter table users ADD twitch_username text;
+create unique index if not exists users_twitch_username_uindex
+  on users (twitch_username);

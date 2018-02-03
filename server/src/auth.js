@@ -11,14 +11,15 @@ passport.use(new TwitchStrategy({
   callbackURL: process.env.TWITCH_CALLBACK_URL,
   scope: 'user_read'
 }, (accessToken, refreshToken, profile, done) => {
+  log.info({ passportProfile: profile })
   // Upsert into users table
   knex.raw(`
     INSERT INTO users
-      (twitch_id)
+      (twitch_id, twitch_username)
     VALUES
-      (${profile.id})
+      (${profile.id}, '${profile.username}')
     ON CONFLICT (twitch_id) DO UPDATE SET
-      updated_at = now() at time zone 'utc'
+      twitch_username = '${profile.username}'
     WHERE users.twitch_id = '${profile.id}'
     RETURNING *`)
   .then(resp => {

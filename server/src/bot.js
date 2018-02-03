@@ -7,7 +7,11 @@ const bot = new TwitchBot({
 })
 
 bot.on('join', channel => {
-  log.info('Bot joined: %s', JSON.stringify(channel))
+  log.info({ joined: channel })
+})
+
+bot.on('part', channel => {
+  log.info({ parted: channel })
 })
 
 bot.on('message', chatter => {

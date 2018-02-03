@@ -2,6 +2,7 @@ const knex = require('./models/knex')
 const bot = require('./bot')
 const log = require('./log')
 const Setting = require('./models/setting')
+const util = require('./util')
 
 const redirectHome = (res) => {
   if(process.env.NODE_ENV === 'production') {
@@ -11,33 +12,9 @@ const redirectHome = (res) => {
   }
 }
 
-const forbidden = (msg) => {
-  return {
-    error: 'Unauthenticated',
-    message: msg,
-    status: 401
-  }
-}
-
-const bad = (msg) => {
-  return {
-    error: 'Bad Request',
-    message: msg,
-    status: 400
-  }
-}
-
-const server_err = (msg) => {
-  return {
-    error: 'Internal Server Error',
-    message: msg,
-    status: 500
-  }
-}
-
 const ensureAuth = (req, res, next) => {
   if(!req.user) {
-    return res.status(401).json(forbidden('Client must be authenticated'))
+    return util.forbidden(res, 'Client must be authenticated')
   } else {
     next()
   }
@@ -54,7 +31,7 @@ module.exports = (app, passport) => {
     if(req.user) {
       return res.json(req.user)
     } else {
-      return res.status(401).json(forbidden('Cannot retrieve authenticated user, try logging in'))
+      return util.forbidden(res, 'Cannot retrieve authenticated user, try logging in')
     }
   })
 
@@ -75,7 +52,7 @@ module.exports = (app, passport) => {
       bot.join(req.user.username)
       return res.status(204).send()
     } else {
-      return res.status(400).json(bad('Unable to join invalid channel name'))
+      return util.bad(res, 'Unable to join invalid channel name')
     }
   })
 
@@ -85,7 +62,7 @@ module.exports = (app, passport) => {
       bot.part(req.user.username)
       return res.status(204).send()
     } else {
-      return res.status(400).json(bad('Unable to part invalid channel name'))
+      return util.bad(res, 'Unable to part invalid channel name')
     }
   })
 
@@ -99,7 +76,7 @@ module.exports = (app, passport) => {
       })
       .catch(err => {
         log.error({ settingsAPIResponseError: err.toString() })
-        return res.status(500).json(server_err(err.toString()))
+        return util.serverErr(err.toString())
       })
   })
 }
