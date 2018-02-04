@@ -69,7 +69,7 @@ module.exports = (app, passport) => {
   })
 
   app.get('/settings', ensureAuth, (req, res) => {
-    Setting.byTwitchID(req.user.id)
+    Setting.findByTwitchID(req.user.id)
       .then(s => {
         log.info({ settingsAPIResponse: s })
         return res.json({

@@ -19,20 +19,20 @@ class Setting extends BaseModel {
       .returning('*')
       .then(rows => {
         log.info({ settingSetBotEnabled: rows })
-        return Setting.fromRows(rows)
+        return Setting._fromRows(rows)
       })
   }
 
-  static byTwitchID(twitch_id) {
+  static findByTwitchID(twitch_id) {
     return super.db('settings')
       .where('twitch_id', twitch_id)
       .then(rows => {
         log.info({ settingRows: rows })
-        return Setting.fromRows(rows)
+        return Setting._fromRows(rows)
       })
   }
 
-  static fromRows(rows) {
+  static _fromRows(rows) {
     if(!rows || rows.length == 0) {
       return null
     }
