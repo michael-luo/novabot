@@ -50,6 +50,7 @@ module.exports = (app, passport) => {
   app.post('/bot/join', ensureAuth, (req, res) => {
     if(req.user.username) {
       bot.join(req.user.username)
+      Setting.setBot(req.user.id, true)
       return res.status(204).send()
     } else {
       return util.bad(res, 'Unable to join invalid channel name')
@@ -60,6 +61,7 @@ module.exports = (app, passport) => {
   app.post('/bot/part', ensureAuth, (req, res) => {
     if(req.user.username) {
       bot.part(req.user.username)
+      Setting.setBot(req.user.id, false)
       return res.status(204).send()
     } else {
       return util.bad(res, 'Unable to part invalid channel name')

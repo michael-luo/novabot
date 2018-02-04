@@ -10,9 +10,22 @@ class Setting extends BaseModel {
     this.botEnabled = options.botEnabled
   }
 
-  static byTwitchID(id) {
+  static setBot(twitch_id, enabled) {
     return super.db('settings')
-      .where('twitch_id', id)
+      .where('twitch_id', twitch_id)
+      .update({
+        bot_enabled: enabled
+      })
+      .returning('*')
+      .then(rows => {
+        log.info({ settingSetBotEnabled: rows })
+        return Setting.fromRows(rows)
+      })
+  }
+
+  static byTwitchID(twitch_id) {
+    return super.db('settings')
+      .where('twitch_id', twitch_id)
       .then(rows => {
         log.info({ settingRows: rows })
         return Setting.fromRows(rows)

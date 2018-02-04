@@ -57,11 +57,11 @@ passport.use(new TwitchStrategy({
 }))
 
 passport.serializeUser(function(user, done) {
-    done(null, user);
+  done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-    done(null, user);
+  done(null, user);
 });
 
 module.exports = passport
