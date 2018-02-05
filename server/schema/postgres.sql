@@ -1,3 +1,4 @@
+-- Users
 create table if not exists users
 (
   id serial not null
@@ -15,6 +16,7 @@ create unique index if not exists users_twitch_id_uindex
 create unique index if not exists users_twitch_username_uindex
   on users (twitch_username);
 
+-- Settings
 create table if not exists settings
 (
   id serial not null
@@ -37,3 +39,18 @@ create unique index if not exists settings_user_id_uindex
 
 create unique index if not exists settings_twitch_id_uindex
   on settings (twitch_id);
+
+-- Balances
+create table if not exists balances
+(
+  id serial not null
+    constraint balances_pkey
+      primary key,
+  twitch_id text not null,
+  amount bigint default 0 not null,
+  currency text not null,
+  updated_at timestamp
+);
+
+create unique index if not exists balances_twitch_id_currency_uindex
+  on balances (twitch_id, currency);

@@ -1,12 +1,16 @@
-const db = require('./knex')
+const knexDB = require('./knex')
 
 class BaseModel {
   constructor() {
-    this.db = db
+    this._db = knexDB
+  }
+
+  get db() {
+    return this._db
   }
 
   static get db() {
-    return db
+    return knexDB
   }
 }
 
