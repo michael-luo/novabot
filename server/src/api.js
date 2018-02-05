@@ -1,5 +1,5 @@
 const knex = require('./models/knex')
-const bot = require('./bot')
+const bot = require('./bot/bot')
 const log = require('./log')
 const Setting = require('./models/setting')
 const util = require('./util')

@@ -2,9 +2,7 @@ let instance = null
 
 class KnexDBClient {
   constructor() {
-    if(!instance) {
-      instance = this
-    }
+    if(instance) return instance
 
     this.time = new Date()
     this.dbClient = require('knex')({
@@ -17,7 +15,7 @@ class KnexDBClient {
       }
     })
 
-    return instance
+    instance = this
   }
 
   set db(client) {
@@ -29,5 +27,5 @@ class KnexDBClient {
   }
 }
 
-let dbClient = new KnexDBClient()
+const dbClient = new KnexDBClient()
 module.exports = dbClient.db

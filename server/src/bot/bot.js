@@ -1,6 +1,7 @@
-const Setting = require('./models/setting')
+const Setting = require('../models/setting')
 const TwitchBot = require('twitch-bot')
-const log = require('./log')
+const commands = require('./commands')
+const log = require('../log')
 
 let instance = null
 
@@ -15,7 +16,7 @@ class StellarBot {
 
     this._init()
     this._joinAllChannels()
-    this.instance = this
+    instance = this
   }
 
   _init() {
@@ -29,15 +30,13 @@ class StellarBot {
       log.info({ botParted: channel })
     })
 
-    bot.on('message', chatter => {
-      log.info({ receivedMessage: chatter })
-      bot.say(chatter.message, chatter.channel)
-    })
-
     bot.on('error', err => {
       log.error({ error: err })
     })
-  } // End init()
+
+    // Attach commands to the bot listener
+    commands(bot)
+  }
 
   _joinAllChannels() {
     const bot = this.bot
