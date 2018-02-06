@@ -16,7 +16,7 @@ class User extends BaseModel {
     return super.db.transaction(trx => {
       return trx.raw(`set transaction isolation level repeatable read;`)
         .then(() => {
-          return super.db('balances')
+          return super.db('balances').transacting(trx)
             .where('twitch_id', twitchID)
             .where('currency', 'xlm')
         })
@@ -31,11 +31,11 @@ class User extends BaseModel {
           // Divide amount in stroops by 10,000,000 to get amount in Lumens
           const lumensBalance = rows[0].amount / 10000000
           if(lumensBalance < amount) {
-            throw new Error('User does not have sufficient balance')
+            throw new Error(`User does not have sufficient balance ${lumensBalance} / ${amount}`)
           }
 
           // Decrement sender
-          return super.db('balances')
+          return super.db('balances').transacting(trx)
             .where('twitch_id', twitchID)
             .where('currency', 'xlm')
             .decrement('amount', amount * 10000000)
@@ -46,7 +46,7 @@ class User extends BaseModel {
           }
 
           // Increment receiver
-          return super.db('balances')
+          return super.db('balances').transacting(trx)
             .where('twitch_id', toChannelID)
             .where('currency', 'xlm')
             .increment('amount', amount * 10000000)
@@ -56,12 +56,16 @@ class User extends BaseModel {
             throw new Error('Failed to increment receiver')
           }
 
-          return {
+          const donationResult = {
             to: toChannelID,
             from: twitchID,
             amountLumens: amount
           }
+
+          log.info({ donationResult })
+          return donationResult
         })
+        .then(trx.commit)
         .catch(trx.rollback)
     })
   }

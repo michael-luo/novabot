@@ -12,7 +12,7 @@ const COMMANDS = {
   '!xlm': (bot, chatter, args) => {
     const amount = Number.parseFloat(args[0])
 
-    if(Number.isNaN(amount) || amount <= 0) {
+    if(Number.isNaN(amount) || amount < 0.0000001 || amount > 100000) {
       COMMANDS['!commands'](bot, chatter, args)
     } else {
       User.findByTwitchName(chatter.username)
