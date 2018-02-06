@@ -22,17 +22,44 @@ class User extends BaseModel {
         })
         .then(rows => {
           log.info({ checkUserBalanceSendCoins: rows })
-          if(rows && rows[0]) {
-            // Divide amount in stroops by 10,000,000 to get amount in Lumens
-            if(rows[0].amount / 10000000 < amount) {
-              throw new Error('User does not have sufficient balance')
-            }
-          } else {
+
+          if(!rows || !rows[0]) {
+            log.error('Invalid balances response')
             throw new Error('Invalid balances response')
           }
 
+          // Divide amount in stroops by 10,000,000 to get amount in Lumens
+          const lumensBalance = rows[0].amount / 10000000
+          if(lumensBalance < amount) {
+            throw new Error('User does not have sufficient balance')
+          }
+
+          // Decrement sender
+          return super.db('balances')
+            .where('twitch_id', twitchID)
+            .where('currency', 'xlm')
+            .decrement('amount', amount * 10000000)
+        })
+        .then(rows => {
+          if(rows != 1) {
+            throw new Error('Failed to decrement sender')
+          }
+
+          // Increment receiver
+          return super.db('balances')
+            .where('twitch_id', toChannelID)
+            .where('currency', 'xlm')
+            .increment('amount', amount * 10000000)
+        })
+        .then(rows => {
+          if(rows != 1) {
+            throw new Error('Failed to increment receiver')
+          }
+
           return {
-            success: true
+            to: toChannelID,
+            from: twitchID,
+            amountLumens: amount
           }
         })
         .catch(trx.rollback)

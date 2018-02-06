@@ -4,33 +4,28 @@ const User = require('../models/user')
 const COMMANDS = {
   '!commands': (bot, chatter, args) => {
     bot.say(
-      `@${chatter.username} -> You can send Stellar Lumens cryptocurrency to the streamer with '!xlm <NUMBER_OF_COINS>'`,
+      `@${chatter.username} -> You can send Stellar Lumens, a cryptocurrency, to the streamer with: '!xlm <NUMBER_OF_COINS>'`,
       chatter.channel
     )
   },
 
   '!xlm': (bot, chatter, args) => {
-    const amount = Number.parseInt(args[0])
+    const amount = Number.parseFloat(args[0])
 
     if(Number.isNaN(amount) || amount <= 0) {
       COMMANDS['!commands'](bot, chatter, args)
     } else {
       User.findByTwitchName(chatter.username)
         .then(user => {
-          user.sendCoins(chatter.room_id, amount)
-            .then(result => {
-              log.info({ sendCoinsResult: result })
-              bot.say(`${chatter.username} just donated ${amount} Stellar Lumens ($XLM) to ${chatter.channel}!!`, chatter.channel)
-            })
-            .catch(err => {
-              log.error({ failedSendXLMError: err.toString() })
-              bot.say(`Failed to send ${amount} coins, try depositing some cryptocurrency at https://michaelluo.com`, chatter.channel)
-            })
-
+          return user.sendCoins(chatter.room_id, amount)
+        })
+        .then(result => {
+          log.info({ sendCoinsResult: result })
+          bot.say(`${chatter.username} just donated ${amount} Stellar Lumens ($XLM) to ${chatter.channel}!!`, chatter.channel)
         })
         .catch(err => {
-          log.error({ failedFindNameSendXLMError: err.toString() })
-          bot.say(`Failed to send ${amount} coins, please try again later...`, chatter.channel)
+          log.error({ failedSendXLMError: err.toString() })
+          bot.say(`Failed to send ${amount} coins, deposit some cryptocurrency via https://michaelluo.com, or try again later`, chatter.channel)
         })
     }
   }
