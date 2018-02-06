@@ -18,7 +18,8 @@ const COMMANDS = {
       User.findByTwitchName(chatter.username)
         .then(user => {
           user.sendCoins(chatter.room_id, amount)
-            .then(() => {
+            .then(result => {
+              log.info({ sendCoinsResult: result })
               bot.say(`${chatter.username} just donated ${amount} Stellar Lumens ($XLM) to ${chatter.channel}!!`, chatter.channel)
             })
             .catch(err => {

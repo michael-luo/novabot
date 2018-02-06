@@ -29,47 +29,37 @@ passport.use(new TwitchStrategy({
       }
     })
 
-    knex.raw(`
+    return knex.raw(`
       INSERT INTO settings
         (user_id, twitch_id)
       VALUES
         (${resp.rows[0].id}, ${profile.id})
       ON CONFLICT (user_id) DO NOTHING
       RETURNING *`)
-    .then(resp => {
-
-      log.info({
-        upsert_settings: {
-          resp: resp.rows
-        }
-      })
-
-      knex.raw(`
-        INSERT INTO balances
-          (twitch_id, currency)
-        VALUES
-          (${profile.id}, 'xlm')
-        ON CONFLICT (twitch_id, currency) DO NOTHING
-        RETURNING *`)
-      .then(resp => {
-        log.info({
-          upsert_balances: {
-            resp: resp.rows
-          }
-        })
-
-        return done(null, profile)
-      })
-      .catch(err => {
-        log.error(err)
-        return done(err, profile)
-      })
-
+  })
+  .then(resp => {
+    log.info({
+      upsert_settings: {
+        resp: resp.rows
+      }
     })
-    .catch(err => {
-      log.error(err)
-      return done(err, profile)
+
+    return knex.raw(`
+      INSERT INTO balances
+        (twitch_id, currency)
+      VALUES
+        (${profile.id}, 'xlm')
+      ON CONFLICT (twitch_id, currency) DO NOTHING
+      RETURNING *`)
+  })
+  .then(resp => {
+    log.info({
+      upsert_balances: {
+        resp: resp.rows
+      }
     })
+
+    return done(null, profile)
   })
   .catch(err => {
     log.error(err)
