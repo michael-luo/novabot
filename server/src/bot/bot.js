@@ -1,4 +1,4 @@
-const Setting = require('../models/setting')
+const User = require('../models/user')
 const TwitchBot = require('twitch-bot')
 const commands = require('./commands')
 const log = require('../log')
@@ -45,18 +45,18 @@ class StellarBot {
       if(data.includes('Welcome')) {
         // Join channels on instance startup
         // TODO: Distribute bot instances across nodes, also shouldn't select all from table as it doesn't scale
-        Setting.findAll()
-          .then(settings => {
-            settings.forEach(s => {
-              if(s.botEnabled && s.twitchUsername) {
-                log.info(`Bot loaded settings and joining channel: ${s.twitchUsername}`)
-                bot.join(s.twitchUsername)
+        User.findAllEnabled()
+          .then(users => {
+            users.forEach(user => {
+              if(user.botEnabled) {
+                log.info(`Bot loaded settings and joining channel: ${user.twitchUsername}`)
+                bot.join(user.twitchUsername)
               }
             })
           })
           .catch(err => {
             log.error({
-              findAllSettingsFailed: err.toString()
+              findAllEnabledBotsFailed: err.toString()
             })
           })
       }

@@ -1,7 +1,7 @@
 const knex = require('./models/knex')
 const bot = require('./bot/bot')
 const log = require('./log')
-const Setting = require('./models/setting')
+const User = require('./models/user')
 const util = require('./util')
 
 const redirectHome = (res) => {
@@ -29,7 +29,17 @@ module.exports = (app, passport) => {
 
   app.get('/self', (req, res) => {
     if(req.user) {
-      return res.json(req.user)
+      if (Boolean(req.query.refresh)) {
+        return User.findByTwitchName(req.user.username)
+          .then(user => {
+            return res.json(user.toHash())
+          })
+          .catch(err => {
+            return util.serverErr(res, 'Failed to find by twitch name')
+          })
+      } else {
+        return res.json(req.user)
+      }
     } else {
       return util.forbidden(res, 'Cannot retrieve authenticated user, try logging in')
     }
@@ -50,7 +60,7 @@ module.exports = (app, passport) => {
   app.post('/bot/join', ensureAuth, (req, res) => {
     if(req.user.username) {
       bot.join(req.user.username)
-      Setting.setBot(req.user.id, true)
+      User.setBot(req.user.id, true)
       return res.status(204).send()
     } else {
       return util.bad(res, 'Unable to join invalid channel name')
@@ -61,25 +71,11 @@ module.exports = (app, passport) => {
   app.post('/bot/part', ensureAuth, (req, res) => {
     if(req.user.username) {
       bot.part(req.user.username)
-      Setting.setBot(req.user.id, false)
+      User.setBot(req.user.id, false)
       return res.status(204).send()
     } else {
       return util.bad(res, 'Unable to part invalid channel name')
     }
-  })
-
-  app.get('/settings', ensureAuth, (req, res) => {
-    Setting.findByTwitchID(req.user.id)
-      .then(s => {
-        log.info({ settingsAPIResponse: s })
-        return res.json({
-          settings: s
-        })
-      })
-      .catch(err => {
-        log.error({ settingsAPIResponseError: err.toString() })
-        return util.serverErr(err.toString())
-      })
   })
 }
 

@@ -14,7 +14,7 @@
 
 <script>
 import BotsService from '@/services/BotsService'
-import SettingsService from '@/services/SettingsService'
+import UsersService from '@/services/UsersService'
 
 export default {
   props: ['user'],
@@ -27,18 +27,7 @@ export default {
   },
 
   mounted () {
-
-  },
-
-  created () {
-    SettingsService.getSettings()
-      .then(resp => {
-        const settings = resp.data.settings
-        this.botEnabled = settings && settings.botEnabled
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    this.getBotEnabled()
   },
 
   methods: {
@@ -53,6 +42,16 @@ export default {
     async partChannel () {
       try {
         await BotsService.partChannel()
+      } catch (err) {
+        console.log(err)
+      }
+    },
+
+    async getBotEnabled () {
+      try {
+        const resp = await UsersService.fetchSelf({ refresh: true })
+        console.log(resp)
+        this.botEnabled = resp.data.botEnabled
       } catch (err) {
         console.log(err)
       }

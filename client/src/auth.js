@@ -13,7 +13,7 @@ export default {
   requireAuth (to, from, next) {
     UsersService.fetchSelf()
       .then(response => {
-        console.log(response)
+        // response fields: { botEnabled, displayName, email, id, provider, username }
         next()
       })
       .catch(error => {

@@ -23,43 +23,24 @@ passport.use(new TwitchStrategy({
     WHERE users.twitch_id = '${profile.id}'
     RETURNING *`)
   .then(resp => {
-    log.info({
-      upsert_user: {
-        rows: resp.rows
-      }
-    })
+    log.info({ upsert_user: resp.rows })
+    const botEnabled = resp.rows[0].bot_enabled
 
-    return knex.raw(`
-      INSERT INTO settings
-        (user_id, twitch_id)
-      VALUES
-        (${resp.rows[0].id}, ${profile.id})
-      ON CONFLICT (user_id) DO NOTHING
-      RETURNING *`)
-  })
-  .then(resp => {
-    log.info({
-      upsert_settings: {
-        resp: resp.rows
-      }
-    })
-
-    return knex.raw(`
+    knex.raw(`
       INSERT INTO balances
         (twitch_id, currency)
       VALUES
         (${profile.id}, 'xlm')
-      ON CONFLICT (twitch_id, currency) DO NOTHING
-      RETURNING *`)
-  })
-  .then(resp => {
-    log.info({
-      upsert_balances: {
-        resp: resp.rows
-      }
-    })
+      ON CONFLICT (twitch_id, currency) DO NOTHING`)
 
-    return done(null, profile)
+    return {
+      botEnabled
+    }
+  })
+  .then((resp) => {
+    const authedUser = Object.assign(profile, resp)
+    log.info({ authedUser })
+    return done(null, authedUser)
   })
   .catch(err => {
     log.error(err)

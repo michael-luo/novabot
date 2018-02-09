@@ -7,6 +7,16 @@ class User extends BaseModel {
     this.id = options.id
     this.twitchID = options.twitchID
     this.twitchUsername = options.twitchUsername
+    this.botEnabled = options.botEnabled
+  }
+
+  toHash() {
+    return {
+      id: this.id,
+      twitchID: this.twitchID,
+      twitchUsername: this.twitchUsername,
+      botEnabled: this.botEnabled
+    }
   }
 
   // Transfer this user's coins to the given channelID
@@ -70,6 +80,28 @@ class User extends BaseModel {
     })
   }
 
+  static setBot(twitch_id, enabled) {
+    return super.db('users')
+      .where('twitch_id', twitch_id)
+      .update({
+        bot_enabled: enabled
+      })
+      .returning('*')
+      .then(rows => {
+        log.info({ setBotEnabled: rows })
+        return User._fromFirstRow(rows)
+      })
+  }
+
+  static findAllEnabled() {
+    return super.db('users')
+      .where('bot_enabled', true)
+      .then(rows => {
+        log.info({ findAllEnabledBots: rows })
+        return User._fromRows(rows)
+      })
+  }
+
   static findByTwitchName(name) {
     return super.db('users')
       .where('twitch_username', name)
@@ -97,7 +129,8 @@ class User extends BaseModel {
     return new User({
       id: row.id,
       twitchID: row.twitch_id,
-      twitchUsername: row.twitch_username
+      twitchUsername: row.twitch_username,
+      botEnabled: row.bot_enabled
     })
   }
 }
