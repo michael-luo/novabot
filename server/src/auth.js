@@ -12,38 +12,34 @@ passport.use(new TwitchStrategy({
   scope: 'user_read'
 }, (accessToken, refreshToken, profile, done) => {
   log.info({ passportProfile: profile })
-  // Upsert into users table
-  knex.raw(`
-    INSERT INTO users
-      (twitch_id, twitch_username)
-    VALUES
-      (${profile.id}, '${profile.username}')
-    ON CONFLICT (twitch_id) DO UPDATE SET
-      twitch_username = '${profile.username}'
-    WHERE users.twitch_id = '${profile.id}'
-    RETURNING *`)
-  .then(resp => {
-    log.info({ upsert_user: resp.rows })
-    const botEnabled = resp.rows[0].bot_enabled
 
-    knex.raw(`
-      INSERT INTO balances
-        (twitch_id, currency)
+  return knex.transaction(trx => {
+    return trx.raw(`
+      INSERT INTO users
+        (twitch_id, twitch_username)
       VALUES
-        (${profile.id}, 'xlm')
-      ON CONFLICT (twitch_id, currency) DO NOTHING`)
+        (${profile.id}, '${profile.username}')
+      ON CONFLICT (twitch_id) DO UPDATE SET
+        twitch_username = '${profile.username}'
+      WHERE users.twitch_id = '${profile.id}'
+      RETURNING *`)
+    .then(usersResp => {
+      log.info({ upsertUser: usersResp.rows })
 
-    return {
-      botEnabled
-    }
+      return trx.raw(`
+        INSERT INTO balances
+          (twitch_id, currency)
+        VALUES
+          (${profile.id}, 'xlm')
+        ON CONFLICT (twitch_id, currency) DO NOTHING`)
+    })
+    .then(trx.commit)
+    .catch(trx.rollback)
   })
-  .then((resp) => {
-    const authedUser = Object.assign(profile, resp)
-    log.info({ authedUser })
-    return done(null, authedUser)
+  .then(resp => {
+    return done(null, profile)
   })
   .catch(err => {
-    log.error(err)
     return done(err, profile)
   })
 }))
