@@ -50,6 +50,7 @@ class StellarBot {
             users.forEach(user => {
               if(user.botEnabled) {
                 log.info(`Bot loaded settings and joining channel: ${user.twitchUsername}`)
+                // TODO: Rate limit
                 bot.join(user.twitchUsername)
               }
             })
