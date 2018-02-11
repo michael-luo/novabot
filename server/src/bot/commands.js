@@ -4,12 +4,12 @@ const User = require('../models/user')
 const COMMANDS = {
   '!commands': (bot, chatter, args) => {
     bot.say(
-      `@${chatter.username} -> You can send Stellar Lumens, a cryptocurrency, to the streamer with: '!xlm <NUMBER_OF_COINS>'`,
+      `@${chatter.username} -> You can send Stellar Lumens, a cryptocurrency, to the streamer with: '!tip <NUMBER_OF_COINS>'`,
       chatter.channel
     )
   },
 
-  '!xlm': (bot, chatter, args) => {
+  '!tip': (bot, chatter, args) => {
     const amount = Number.parseFloat(args[0])
 
     if(Number.isNaN(amount) || amount < 0.0000001 || amount > 100000) {
