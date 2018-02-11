@@ -1,4 +1,5 @@
 const BaseModel = require('./base')
+const Balance = require('./balance')
 const log = require('../log')
 
 class User extends BaseModel {
@@ -25,46 +26,24 @@ class User extends BaseModel {
 
     return super.db.transaction(trx => {
       return trx.raw(`set transaction isolation level repeatable read;`)
-        .then(() => {
-          return super.db('balances').transacting(trx)
-            .where('twitch_id', twitchID)
-            .where('currency', 'xlm')
-        })
+        .then(() => { return Balance.findBalanceByTwitchID(twitchID).transacting(trx) })
         .then(rows => {
-          log.info({ checkUserBalanceSendCoins: rows })
-
-          if(!rows || !rows[0]) {
-            log.error('Invalid balances response')
-            throw new Error('Invalid balances response')
-          }
+          if(!rows || !rows[0]) throw new Error('Invalid balances response')
 
           // Divide amount in stroops by 10,000,000 to get amount in Lumens
           const lumensBalance = rows[0].amount / 10000000
-          if(lumensBalance < amount) {
-            throw new Error(`User does not have sufficient balance ${lumensBalance} / ${amount}`)
-          }
+          if(lumensBalance < amount) throw new Error(`User insufficient balance ${lumensBalance} / ${amount}`)
 
           // Decrement sender
-          return super.db('balances').transacting(trx)
-            .where('twitch_id', twitchID)
-            .where('currency', 'xlm')
-            .decrement('amount', amount * 10000000)
+          return Balance.decrement(twitchID, amount).transacting(trx)
         })
         .then(rows => {
-          if(rows != 1) {
-            throw new Error('Failed to decrement sender')
-          }
-
+          if(rows != 1) throw new Error('Failed to decrement sender')
           // Increment receiver
-          return super.db('balances').transacting(trx)
-            .where('twitch_id', toChannelID)
-            .where('currency', 'xlm')
-            .increment('amount', amount * 10000000)
+          return Balance.increment(toChannelID, amount).transacting(trx)
         })
         .then(rows => {
-          if(rows != 1) {
-            throw new Error('Failed to increment receiver')
-          }
+          if(rows != 1) throw new Error('Failed to increment receiver')
 
           const donationResult = {
             to: toChannelID,

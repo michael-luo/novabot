@@ -11,10 +11,25 @@ class Balance extends BaseModel {
     this.updatedAt = options.updatedAt
   }
 
-  static findBalanceByTwitchID(id) {
+  static findBalanceByTwitchID(twitchID) {
     return super.db('balances')
-      .where('twitch_id', id)
+      .where('twitch_id', twitchID)
       .where('currency', 'xlm')
+  }
+
+  // Amount in lumens, decrement by lumens * 10,000,000 (amount in stroops)
+  static decrement(twitchID, amount) {
+    return super.db('balances')
+      .where('twitch_id', twitchID)
+      .where('currency', 'xlm')
+      .decrement('amount', amount * 10000000)
+  }
+
+  static increment(twitchID, amount) {
+    return super.db('balances')
+      .where('twitch_id', twitchID)
+      .where('currency', 'xlm')
+      .increment('amount', amount * 10000000)
   }
 
   static _fromFirstRow(rows) {
