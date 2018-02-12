@@ -3,6 +3,7 @@ const bot = require('./bot/bot')
 const log = require('./log')
 const User = require('./models/user')
 const util = require('./util')
+const stellarClient = require('./clients/stellar')
 
 const redirectHome = (res) => {
   if(process.env.NODE_ENV === 'production') {
