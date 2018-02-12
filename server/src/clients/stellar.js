@@ -48,9 +48,9 @@ class StellarListener {
   _start() {
     Cursor.getPagingToken()
       .then(cursor => {
-        log.info({ retrievedCursor: cursor })
+        log.info(`Watching Stellar account: ${process.env.STELLAR_ACC_PUBLIC_KEY} at cursor: ${cursor.token}`)
         this.server.payments()
-          .forAccount('GBTFU5DBANNJII73SF2S5ZOCLYJK73Y3774CYAE36W4SVMRJ6NR5ZEUT')
+          .forAccount(process.env.STELLAR_ACC_PUBLIC_KEY)
           .cursor(cursor.token)
           .stream({
             onmessage: message => {

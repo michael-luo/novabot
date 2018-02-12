@@ -11,7 +11,9 @@ module.exports = {
       process.env.DB_HOST,
       process.env.DB_USER,
       process.env.DB_PASSWORD,
-      process.env.DB_NAME
+      process.env.DB_NAME,
+      process.env.STELLAR_ACC_PUBLIC_KEY,
+      process.env.STELLAR_ACC_SECRET_KEY
     ]
 
     if(env.includes(null) || env.includes('')) {
