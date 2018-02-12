@@ -13,10 +13,11 @@ module.exports = {
       process.env.DB_PASSWORD,
       process.env.DB_NAME,
       process.env.STELLAR_ACC_PUBLIC_KEY,
-      process.env.STELLAR_ACC_SECRET_KEY
+      process.env.STELLAR_ACC_SECRET_KEY,
+      process.env.STELLAR_SERVER
     ]
 
-    if(env.includes(null) || env.includes('')) {
+    if(env.includes(null) || env.includes(undefined) || env.includes('')) {
       throw new Error('Missing environment variable(s)')
     }
   }

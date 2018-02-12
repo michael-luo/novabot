@@ -7,9 +7,9 @@ let instance = null
 class StellarListener {
   constructor() {
     if(instance) return instance
-    this.server = new StellarSDK.Server('https://horizon-testnet.stellar.org')
-    this._start()
+    this.server = new StellarSDK.Server(process.env.STELLAR_SERVER)
     instance = this
+    this._start()
   }
 
   // Listen to Stellar transactions
@@ -47,22 +47,25 @@ class StellarListener {
   // }
   _start() {
     Cursor.getPagingToken()
-      .then(cursor => {
-        log.info(`Watching Stellar account: ${process.env.STELLAR_ACC_PUBLIC_KEY} at cursor: ${cursor.token}`)
-        this.server.payments()
-          .forAccount(process.env.STELLAR_ACC_PUBLIC_KEY)
-          .cursor(cursor.token)
-          .stream({
-            onmessage: message => {
-              log.info({ stellarMessage: message })
-            }
-          })
-      })
+      .then(this._paymentsSinceCursor)
       .catch(err => {
         log.error(err)
       })
+  }
 
+  _paymentsSinceCursor(cursor) {
+    if(!cursor || !cursor.token) {
+      throw new Error("Unable to initialize Stellar payments listener with cursor")
+    }
+    log.info(`Watching Stellar account: ${process.env.STELLAR_ACC_PUBLIC_KEY} at cursor: ${cursor.token}`)
+    instance.server.payments()
+      .forAccount(process.env.STELLAR_ACC_PUBLIC_KEY)
+      .cursor(cursor.token)
+      .stream({ onmessage: instance._processPayment })
+  }
 
+  _processPayment(message) {
+    log.info({ stellarMessage: message })
   }
 }
 
