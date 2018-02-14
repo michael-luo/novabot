@@ -1,5 +1,6 @@
 const StellarSDK = require('stellar-sdk')
 const Cursor = require('../models/cursor')
+const knexDB = require('../models/knex')
 const log = require('../log')
 
 let instance = null
@@ -8,8 +9,9 @@ class StellarListener {
   constructor() {
     if(instance) return instance
     this.server = new StellarSDK.Server(process.env.STELLAR_SERVER)
+    this.db = knexDB
     instance = this
-    this._start()
+    this.start()
   }
 
   // Listen to Stellar transactions
@@ -45,7 +47,7 @@ class StellarListener {
   //   "to": "GBTFU5DBANNJII73SF2S5ZOCLYJK73Y3774CYAE36W4SVMRJ6NR5ZEUT",
   //   "amount": "1.0000000"
   // }
-  _start() {
+  start() {
     Cursor.getPagingToken()
       .then(this._paymentsSinceCursor)
       .catch(err => {
@@ -65,7 +67,27 @@ class StellarListener {
   }
 
   _processPayment(message) {
-    log.info({ stellarMessage: message })
+    log.info(`Processing Stellar payment message: ${message}`)
+    if(!message) {
+      log.error("Null Stellar message")
+      return;
+    }
+
+    if(message.to === process.env.STELLAR_ACC_PUBLIC_KEY) {
+      this.processDeposit(message)
+    } else if(message.from === process.env.STELLAR_ACC_PUBLIC_KEY) {
+      this.processWithdraw(message)
+    } else {
+      log.error(`Unable to process message: ${message}`)
+    }
+  }
+
+  _processDeposit(message) {
+    log.info(`Processing deposit from ${message.from} to ${message.to}`)
+  }
+
+  _processWithdraw(message) {
+    log.info(`Processing withdrawal from ${message.from} to ${message.to}`)
   }
 }
 
