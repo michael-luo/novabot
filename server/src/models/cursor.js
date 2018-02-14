@@ -45,12 +45,6 @@ class Cursor extends BaseModel {
         paging_token = '${token}'
       RETURNING *
     `)
-    .then(resp => {
-      return 1
-    })
-    .catch(err => {
-      return null
-    })
   }
 
   static _fromFirstRow(rows) {

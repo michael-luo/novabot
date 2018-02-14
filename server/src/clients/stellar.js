@@ -1,5 +1,7 @@
 const StellarSDK = require('stellar-sdk')
 const Cursor = require('../models/cursor')
+const Balance = require('../models/balance')
+
 const knexDB = require('../models/knex')
 const log = require('../log')
 
@@ -67,27 +69,71 @@ class StellarListener {
   }
 
   _processPayment(message) {
-    log.info(`Processing Stellar payment message: ${message}`)
-    if(!message) {
-      log.error("Null Stellar message")
+    log.info(message)
+    if(!instance._isValidPayment(message)) {
       return;
     }
 
     if(message.to === process.env.STELLAR_ACC_PUBLIC_KEY) {
-      this.processDeposit(message)
+      instance._processDeposit(message)
     } else if(message.from === process.env.STELLAR_ACC_PUBLIC_KEY) {
-      this.processWithdraw(message)
-    } else {
-      log.error(`Unable to process message: ${message}`)
+      instance._processWithdraw(message)
     }
   }
 
+  // TODO: Log transaction history and check hash for if payment has already been processed
   _processDeposit(message) {
     log.info(`Processing deposit from ${message.from} to ${message.to}`)
+
+    this.db.transaction(trx => {
+      return trx.raw(`set transaction isolation level serializable;`)
+        .then(() => {
+          return instance.server.transactions()
+            .transaction(message.transaction_hash)
+            .call()
+        })
+        .then(t => {
+          if(!instance._isValidTransaction(t)) {
+            throw new Error("Invalid transaction")
+          }
+          log.info(`Attempting to deposit ${message.amount} XLM to ${t.memo}, trxHash: ${message.transaction_hash}`)
+          return Balance.increment(t.memo, (message.amount * 10000000 - t.fee_paid) / 10000000).transacting(trx)
+        })
+        .then(incrResp => {
+          if(incrResp === 0) throw new Error(`Failed to deposit funds, transaction hash: ${message.transaction_hash}`)
+          return Cursor.setPagingToken(message.paging_token).transacting(trx)
+        })
+        .then(trx.commit)
+        .catch(trx.rollback)
+    })
+    .then(resp => {
+      log.info(`Successful deposit`)
+    })
+    .catch(err => {
+      log.error(err)
+      if(err.toString().includes('could not serialize access due to concurrent update')) {
+        setTimeout(() => { instance._processDeposit(message) }, 10)
+      }
+    })
   }
 
   _processWithdraw(message) {
     log.info(`Processing withdrawal from ${message.from} to ${message.to}`)
+  }
+
+  _isValidPayment(message) {
+    const isValid = message && message.type === 'payment' 
+      && message.type_i === 1 && message.asset_type === 'native'
+      && (message.to === process.env.STELLAR_ACC_PUBLIC_KEY || message.from === process.env.STELLAR_ACC_PUBLIC_KEY)
+
+    if(!isValid) log.error(`Invalid Stellar payment: ${JSON.stringify(message)}`)
+    return isValid
+  }
+
+  _isValidTransaction(t) {
+    const isValid = t && t.memo_type === 'text' && t.memo && Date.now() > new Date(t.valid_after)
+    if (!isValid) log.error(`Invalid Stellar transaction: ${JSON.stringify(t)}`)
+    return isValid
   }
 }
 

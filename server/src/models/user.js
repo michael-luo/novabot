@@ -25,7 +25,7 @@ class User extends BaseModel {
     const twitchID = this.twitchID
 
     return super.db.transaction(trx => {
-      return trx.raw(`set transaction isolation level repeatable read;`)
+      return trx.raw(`set transaction isolation level serializable;`)
         .then(() => { return Balance.findBalanceByTwitchID(twitchID).transacting(trx) })
         .then(rows => {
           if(!rows || !rows[0]) throw new Error('Invalid balances response')
