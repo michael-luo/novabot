@@ -1,9 +1,9 @@
 <template>
   <div class='navbar'>
-    <b-navbar toggleable="md" type="dark" variant="info" fixed="top">
+    <b-navbar toggleable="md" type="dark" variant="dark" fixed="top">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand to="dashboard">StellarBot</b-navbar-brand>
+      <b-navbar-brand to="dashboard">NovaBot</b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse">
 

@@ -10,7 +10,7 @@ class StellarBot {
     if(instance) return instance
 
     this.bot = new TwitchBot({
-      username: 'theStellarBot',
+      username: 'NovaBotCrypto',
       oauth: process.env.TWITCH_BOT_OAUTH
     })
 

@@ -2,6 +2,7 @@ const knex = require('./models/knex')
 const bot = require('./bot/bot')
 const log = require('./log')
 const User = require('./models/user')
+const Balance = require('./models/balance')
 const util = require('./util')
 const stellarClient = require('./clients/stellar')
 
@@ -76,6 +77,31 @@ module.exports = (app, passport) => {
       return res.status(204).send()
     } else {
       return util.bad(res, 'Unable to part invalid channel name')
+    }
+  })
+
+  // Get user's current balance
+  app.get('/balance', ensureAuth, (req, res) => {
+    const defaultResp = () => {
+      return res.json({ amount: 0, currency: 'XLM' })
+    }
+
+    if (req.user.id) {
+      Balance.findBalanceByTwitchID(req.user.id)
+        .then(Balance._fromFirstRow)
+        .then(balance => {
+          if(balance && balance.amount && balance.currency) {
+            return res.json({ amount: balance.amount / 10000000, currency: balance.currency.toUpperCase()})
+          } else {
+            return defaultResp
+          }
+        })
+        .catch(err => {
+          log.error(err)
+          return defaultResp
+        })
+    } else {
+      return defaultResp
     }
   })
 }

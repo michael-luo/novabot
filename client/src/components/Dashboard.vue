@@ -1,24 +1,32 @@
 <template>
   <div class="dashboard">
+    <!-- TODO: move to separate component -->
     <toggle-button id="bot-toggle"
-                   :value="botEnabled"
-                   color="#82C7EB"
-                   :sync="true"
-                   :labels="{checked: 'Bot Enabled', unchecked: 'Bot Disabled'}"
-                   :width="140"
-                   :height="40"
-                   :speed="120"
-                   @change="onToggleEventHandler"/>
+      :value="botEnabled"
+      color="green"
+      :sync="true"
+      :labels="{checked: 'Bot Enabled', unchecked: 'Bot Disabled'}"
+      :width="140"
+      :height="40"
+      :speed="120"
+      @change="onToggleEventHandler">
+    </toggle-button>
+
+    <depositcard :user="user"></depositcard>
   </div>
 </template>
 
 <script>
 import BotsService from '@/services/BotsService'
 import UsersService from '@/services/UsersService'
+import DepositCard from '@/components/DepositCard'
 
 export default {
   props: ['user'],
   name: 'dashboard',
+  components: {
+    'depositcard': DepositCard
+  },
 
   data () {
     return {
@@ -27,7 +35,7 @@ export default {
   },
 
   mounted () {
-    this.getBotEnabled()
+    this.setBotEnabled()
   },
 
   methods: {
@@ -47,10 +55,9 @@ export default {
       }
     },
 
-    async getBotEnabled () {
+    async setBotEnabled () {
       try {
         const resp = await UsersService.fetchSelf({ refresh: true })
-        console.log(resp)
         this.botEnabled = resp.data.botEnabled
       } catch (err) {
         console.log(err)
@@ -67,5 +74,9 @@ export default {
 <style>
 .vue-js-switch#bot-toggle {
   font-size: 14px;
+}
+
+.depositcard {
+  padding: 15px 50px 0px 50px;
 }
 </style>
