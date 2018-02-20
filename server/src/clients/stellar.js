@@ -112,6 +112,7 @@ class StellarListener {
     .catch(err => {
       log.error(err)
       if(err.toString().includes('could not serialize access due to concurrent update')) {
+        log.info({ processDepositRetryTrans: err.toString() })
         setTimeout(() => { instance._processDeposit(message) }, 10)
       }
     })

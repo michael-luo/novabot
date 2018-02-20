@@ -42,7 +42,7 @@ class Cursor extends BaseModel {
       VALUES
         ('xlm', '${token}')
       ON CONFLICT (currency) DO UPDATE SET
-        paging_token = '${token}'
+        paging_token = '${token}' WHERE cursors.paging_token < '${token}'
       RETURNING *
     `)
   }
