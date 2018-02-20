@@ -132,7 +132,7 @@ class StellarListener {
   }
 
   _isValidTransaction(t) {
-    const isValid = t && t.memo_type === 'text' && t.memo && Date.now() > new Date(t.valid_after)
+    const isValid = t && t.memo_type === 'text' && t.memo && (!t.valid_after || Date.now() > new Date(t.valid_after))
     if (!isValid) log.error(`Invalid Stellar transaction: ${JSON.stringify(t)}`)
     return isValid
   }
