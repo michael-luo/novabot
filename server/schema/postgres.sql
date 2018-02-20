@@ -32,3 +32,17 @@ create table if not exists balances
 
 create unique index if not exists balances_twitch_id_currency_uindex
   on balances (twitch_id, currency);
+
+create table if not exists cursors
+(
+  id serial not null
+    constraint cursors_pkey
+      primary key,
+  currency text,
+  paging_token text not null,
+  updated_at timestamp,
+  created_at timestamp default now()
+);
+
+create unique index if not exists cursors_currency_uindex
+  on cursors (currency);
