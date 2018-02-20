@@ -1,4 +1,4 @@
 const bunyan = require('bunyan');
-const log = bunyan.createLogger({name: 'theStellarBot'});
+const log = bunyan.createLogger({name: 'NovaBot'});
 
 module.exports = log
