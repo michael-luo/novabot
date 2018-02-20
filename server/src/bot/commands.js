@@ -1,10 +1,13 @@
 const log = require('../log')
 const User = require('../models/user')
+const Balance = require('../models/balance')
+
+const DEPOSIT_URL = 'https://michaelluo.com'
 
 const COMMANDS = {
   '!commands': (bot, chatter, args) => {
     bot.say(
-      `@${chatter.username} -> You can send Stellar Lumens, a cryptocurrency, to the streamer with: '!tip <NUMBER_OF_COINS>'`,
+      `@${chatter.username} -> You can tip the streamer with Stellar Lumens, a cryptocurrency: "!tip 7"`,
       chatter.channel
     )
   },
@@ -25,9 +28,21 @@ const COMMANDS = {
         })
         .catch(err => {
           log.error({ failedSendXLMError: err.toString() })
-          bot.say(`Failed to send ${amount} coins, deposit some cryptocurrency via https://michaelluo.com, or try again later`, chatter.channel)
+          bot.say(`Failed to tip ${amount} coins, deposit some cryptocurrency via ${DEPOSIT_URL}, or try again later`, chatter.channel)
         })
     }
+  },
+
+  '!balance': (bot, chatter, args) => {
+    Balance.findBalanceByTwitchID(chatter.user_id)
+      .then(Balance._fromFirstRow)
+      .then(balance => {
+        if(!balance || !balance.amount || !balance.currency) throw new Error('Undefined balance')
+        bot.say(`@${chatter.username} - you have ${balance.amount / 10000000} ${balance.currency.toUpperCase()}`, chatter.channel)
+      })
+      .catch(err => {
+        bot.say(`@${chatter.username} - deposit some cryptocurrency at ${DEPOSIT_URL}`)
+      })
   }
 }
 
