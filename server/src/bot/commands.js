@@ -2,7 +2,7 @@ const log = require('../log')
 const User = require('../models/user')
 const Balance = require('../models/balance')
 
-const DEPOSIT_URL = 'https://michaelluo.com'
+const DEPOSIT_URL = 'http://nova-bot-dev.us-west-2.elasticbeanstalk.com/dashboard'
 
 const COMMANDS = {
   '!commands': (bot, chatter, args) => {
@@ -37,7 +37,10 @@ const COMMANDS = {
     Balance.findBalanceByTwitchID(chatter.user_id)
       .then(Balance._fromFirstRow)
       .then(balance => {
-        if(!balance || !balance.amount || !balance.currency) throw new Error('Undefined balance')
+        if(!balance || !balance.amount || !balance.currency) {
+          bot.say(`Get started with NovaBot at ${DEPOSIT_URL}`)
+          return;
+        }
         bot.say(`@${chatter.username} - you have ${balance.amount / 10000000} ${balance.currency.toUpperCase()}`, chatter.channel)
       })
       .catch(err => {
