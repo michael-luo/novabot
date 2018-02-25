@@ -1,9 +1,11 @@
 <template>
   <div class="depositcard">
     <b-card bg-variant="dark" text-variant="white" title="">
-      <p class="card-text"><strong>Current Balance:</strong> {{ balance }} {{ currency }} </p>
+      <p class="card-text"><strong>Current Balance:</strong> {{ balance }} <a href="https://coinmarketcap.com/currencies/stellar/">{{ currency }}</a> </p>
+
+      <p>Deposit some Stellar and use NovaBot commands to donate crypto to other streamers.</p>
       <p class="card-text"><strong>Stellar Deposit Address:</strong> GBTFU5DBANNJII73SF2S5ZOCLYJK73Y3774CYAE36W4SVMRJ6NR5ZEUT</p>
-      <p class="card-text"><strong>Stellar Memo:</strong> {{user ? user.id : ''}}</p>
+      <p class="card-text"><strong>Your Stellar Memo:</strong> {{user ? user.id : ''}}</p>
     </b-card>
   </div>
 </template>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Dashboard from '@/components/Dashboard'
+import Commands from '@/components/Commands'
 import Login from '@/components/Login'
 import NotFound from '@/components/NotFound'
 
@@ -18,6 +19,11 @@ const routes = [
     name: 'Dashboard',
     component: Dashboard,
     beforeEnter: auth.requireAuth
+  },
+  {
+    path: '/commands',
+    name: 'Commands',
+    component: Commands
   },
   {
     path: '/login',

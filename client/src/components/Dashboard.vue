@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard">
     <!-- TODO: move to separate component -->
+    <p style="color: white"></p>
     <toggle-button id="bot-toggle"
       :value="botEnabled"
       color="green"
@@ -9,7 +10,8 @@
       :width="140"
       :height="40"
       :speed="120"
-      @change="onToggleEventHandler">
+      @change="onToggleEventHandler"
+      v-b-tooltip.hover title="Enable NovaBot on Twitch to help facilitate donations through your chat.">
     </toggle-button>
 
     <depositcard :user="user"></depositcard>
