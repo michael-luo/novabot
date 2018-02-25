@@ -8,7 +8,7 @@
 
 <script>
 const commands = [
-  { command: 'Check your balance', description: 'Get your current withdrawable balance of cryptocurrencies.', example: '!balance' },
+  { command: 'Check your balance', description: 'See your current withdrawable balance of cryptocurrencies.', example: '!balance' },
   { command: 'Donate to streamer', description: 'Donate a specified amount of cryptocurrency to the streamer.', example: '!tip 5' }
 ]
 
