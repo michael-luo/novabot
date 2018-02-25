@@ -2,12 +2,12 @@ const log = require('../log')
 const User = require('../models/user')
 const Balance = require('../models/balance')
 
-const DEPOSIT_URL = 'http://nova-bot-dev.us-west-2.elasticbeanstalk.com/dashboard'
+const DEPOSIT_URL = 'http://nova-bot-dev.us-west-2.elasticbeanstalk.com'
 
 const COMMANDS = {
   '!commands': (bot, chatter, args) => {
     bot.say(
-      `@${chatter.username} -> You can tip the streamer with Stellar Lumens, a cryptocurrency: "!tip 7"`,
+      `@${chatter.username} See list of commands at ${DEPOSIT_URL}"`,
       chatter.channel
     )
   },
@@ -28,7 +28,7 @@ const COMMANDS = {
         })
         .catch(err => {
           log.error({ failedSendXLMError: err.toString() })
-          bot.say(`Failed to tip ${amount} coins, deposit some cryptocurrency via ${DEPOSIT_URL}, or try again later`, chatter.channel)
+          bot.say(`Failed to tip ${amount} coin(s), deposit some cryptocurrency at ${DEPOSIT_URL}`, chatter.channel)
         })
     }
   },
@@ -38,7 +38,7 @@ const COMMANDS = {
       .then(Balance._fromFirstRow)
       .then(balance => {
         if(!balance || !balance.amount || !balance.currency) {
-          bot.say(`Get started with NovaBot at ${DEPOSIT_URL}`)
+          bot.say(`Get started with NovaBot at ${DEPOSIT_URL}`, chatter.channel)
           return;
         }
         bot.say(`@${chatter.username} - you have ${balance.amount / 10000000} ${balance.currency.toUpperCase()}`, chatter.channel)
