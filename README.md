@@ -1,17 +1,5 @@
 # twitch-stellar-bot
 
-## Config Files Format
+## Development
 
-```javascript
-TWITCH_CLIENT_ID=X
-TWITCH_CLIENT_SECRET=X
-TWITCH_CALLBACK_URL=X
-TWITCH_BOT_OAUTH=X
-DB_HOST=X
-DB_USER=X
-DB_PASSWORD=X
-DB_NAME=X
-STELLAR_ACC_PUBLIC_KEY=X
-STELLAR_ACC_SECRET_KEY=X
-STELLAR_SERVER=X
-```
+See [client](https://github.com/michael-luo/twitch-stellar-bot/tree/master/client/README.md) and [server](https://github.com/michael-luo/twitch-stellar-bot/blob/master/server/README.md) development instructions.
