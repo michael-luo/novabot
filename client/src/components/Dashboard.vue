@@ -11,7 +11,7 @@
       :height="40"
       :speed="120"
       @change="onToggleEventHandler"
-      v-b-tooltip.hover title="Enable NovaBot on Twitch to help facilitate donations through your chat.">
+      v-b-tooltip.hover title="Enable NovaBot on your Twitch channel to help facilitate donations through your chat.">
     </toggle-button>
 
     <depositcard :user="user"></depositcard>
