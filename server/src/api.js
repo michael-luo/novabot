@@ -8,9 +8,9 @@ const stellarClient = require('./clients/stellar')
 
 const redirectHome = (res) => {
   if(process.env.NODE_ENV === 'production') {
-    res.redirect('/')
+    res.redirect('/dashboard')
   } else {
-    res.redirect('http://localhost:8080')
+    res.redirect('http://localhost:8080/dashboard')
   }
 }
 

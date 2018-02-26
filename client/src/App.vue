@@ -42,7 +42,7 @@ export default {
 
   computed: {
     shouldDisplay () {
-      return (this.user || this.$route.path === '/commands') && this.$route.path !== '/login'
+      return (this.user || this.$route.path === '/commands') && this.$route.path !== '/login' && this.$route.path !== '/'
     }
   }
 }

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import Landing from '@/components/Landing'
 import Dashboard from '@/components/Dashboard'
 import Commands from '@/components/Commands'
 import Login from '@/components/Login'
@@ -12,7 +13,9 @@ Vue.use(Router)
 
 const routes = [
   {
-    path: '/', redirect: '/dashboard'
+    path: '/',
+    name: 'Landing',
+    component: Landing
   },
   {
     path: '/dashboard',
