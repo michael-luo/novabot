@@ -79,6 +79,6 @@ export default {
 }
 
 .depositcard {
-  padding: 15px 50px 0px 50px;
+  padding: 25px 50px 0px 50px;
 }
 </style>
