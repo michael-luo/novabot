@@ -16,8 +16,7 @@ export default {
         // response fields: { botEnabled, displayName, email, id, provider, username }
         next()
       })
-      .catch(error => {
-        console.log(error)
+      .catch(() => {
         next({
           path: '/login',
           query: {
@@ -25,5 +24,14 @@ export default {
           }
         })
       })
+  },
+
+  redirectIfAuthed (to, from, next) {
+    UsersService.fetchSelf()
+      .then(response => {
+        // response fields: { botEnabled, displayName, email, id, provider, username }
+        next({ path: '/dashboard' })
+      })
+      .catch(() => { next() })
   }
 }

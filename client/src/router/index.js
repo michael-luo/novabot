@@ -15,7 +15,8 @@ const routes = [
   {
     path: '/',
     name: 'Landing',
-    component: Landing
+    component: Landing,
+    beforeEnter: auth.redirectIfAuthed
   },
   {
     path: '/dashboard',

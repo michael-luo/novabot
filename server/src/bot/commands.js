@@ -46,6 +46,10 @@ const COMMANDS = {
       .catch(err => {
         bot.say(`@${chatter.username} Deposit cryptocurrency at ${DEPOSIT_URL}`)
       })
+  },
+
+  '!stellar': (bot, chatter, args) => {
+    bot.say(`One lumen (XLM) is a unit of digital currency, like a bitcoin. More info: https://www.stellar.org/lumens/`, chatter.channel)
   }
 }
 
