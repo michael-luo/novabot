@@ -6,11 +6,19 @@ const Balance = require('./models/balance')
 const util = require('./util')
 const stellarClient = require('./clients/stellar')
 
-const redirectHome = (res) => {
+const redirectDashboard = (res) => {
   if(process.env.NODE_ENV === 'production') {
     res.redirect('/dashboard')
   } else {
     res.redirect('http://localhost:8080/dashboard')
+  }
+}
+
+const redirectHome = (res) => {
+  if(process.env.NODE_ENV === 'production') {
+    res.redirect('/')
+  } else {
+    res.redirect('http://localhost:8080/')
   }
 }
 
@@ -50,7 +58,7 @@ module.exports = (app, passport) => {
   app.get('/auth/twitch', passport.authenticate('twitch'))
 
   app.get('/auth/twitch/callback', passport.authenticate('twitch', { failureRedirect: '/'}), (req, res) => {
-    return redirectHome(res)
+    return redirectDashboard(res)
   })
 
   app.get('/logout', (req, res) => {
