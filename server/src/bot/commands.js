@@ -7,7 +7,7 @@ const DEPOSIT_URL = 'http://novabot.me'
 const COMMANDS = {
   '!commands': (bot, chatter, args) => {
     bot.say(
-      `@${chatter.username} See list of commands at ${DEPOSIT_URL}"`,
+      `@${chatter.username} See list of commands at ${DEPOSIT_URL}`,
       chatter.channel
     )
   },
