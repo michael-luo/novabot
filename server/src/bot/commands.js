@@ -24,11 +24,11 @@ const COMMANDS = {
         })
         .then(result => {
           log.info({ sendCoinsResult: result })
-          bot.say(`${chatter.username} just donated ${amount} Stellar Lumens ($XLM) to ${chatter.channel}!!`, chatter.channel)
+          bot.say(`${chatter.username} just donated ${amount} Stellar Lumens to ${chatter.channel}!`, chatter.channel)
         })
         .catch(err => {
           log.error({ failedSendXLMError: err.toString() })
-          bot.say(`Failed to tip ${amount} coin(s), deposit some cryptocurrency at ${DEPOSIT_URL}`, chatter.channel)
+          bot.say(`Failed to tip ${amount} coin(s), deposit cryptocurrency at ${DEPOSIT_URL}`, chatter.channel)
         })
     }
   },
@@ -41,10 +41,10 @@ const COMMANDS = {
           bot.say(`Get started with NovaBot at ${DEPOSIT_URL}`, chatter.channel)
           return;
         }
-        bot.say(`@${chatter.username} - you have ${balance.amount / 10000000} ${balance.currency.toUpperCase()}`, chatter.channel)
+        bot.say(`@${chatter.username} You have ${balance.amount / 10000000} ${balance.currency.toUpperCase()}`, chatter.channel)
       })
       .catch(err => {
-        bot.say(`@${chatter.username} - deposit some cryptocurrency at ${DEPOSIT_URL}`)
+        bot.say(`@${chatter.username} Deposit cryptocurrency at ${DEPOSIT_URL}`)
       })
   }
 }
