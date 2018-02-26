@@ -2,7 +2,7 @@ const log = require('../log')
 const User = require('../models/user')
 const Balance = require('../models/balance')
 
-const DEPOSIT_URL = 'http://nova-bot-dev.us-west-2.elasticbeanstalk.com'
+const DEPOSIT_URL = 'http://novabot.me'
 
 const COMMANDS = {
   '!commands': (bot, chatter, args) => {
