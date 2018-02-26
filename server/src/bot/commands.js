@@ -2,12 +2,13 @@ const log = require('../log')
 const User = require('../models/user')
 const Balance = require('../models/balance')
 
-const DEPOSIT_URL = 'http://novabot.me'
+const BASE_URL = 'http://novabot.me'
+const COMMANDS_URL = `${BASE_URL}/commands`
 
 const COMMANDS = {
   '!commands': (bot, chatter, args) => {
     bot.say(
-      `@${chatter.username} See list of commands at ${DEPOSIT_URL}`,
+      `@${chatter.username} See list of commands at ${COMMANDS_URL}`,
       chatter.channel
     )
   },
@@ -28,7 +29,7 @@ const COMMANDS = {
         })
         .catch(err => {
           log.error({ failedSendXLMError: err.toString() })
-          bot.say(`Failed to tip ${amount} coin(s), deposit cryptocurrency at ${DEPOSIT_URL}`, chatter.channel)
+          bot.say(`Failed to tip ${amount} coin(s), deposit cryptocurrency at ${BASE_URL}`, chatter.channel)
         })
     }
   },
@@ -38,13 +39,13 @@ const COMMANDS = {
       .then(Balance._fromFirstRow)
       .then(balance => {
         if(!balance || !balance.amount || !balance.currency) {
-          bot.say(`Get started with NovaBot at ${DEPOSIT_URL}`, chatter.channel)
+          bot.say(`Get started with NovaBot at ${BASE_URL}`, chatter.channel)
           return;
         }
         bot.say(`@${chatter.username} You have ${balance.amount / 10000000} ${balance.currency.toUpperCase()}`, chatter.channel)
       })
       .catch(err => {
-        bot.say(`@${chatter.username} Deposit cryptocurrency at ${DEPOSIT_URL}`)
+        bot.say(`@${chatter.username} Deposit cryptocurrency at ${BASE_URL}`)
       })
   },
 
