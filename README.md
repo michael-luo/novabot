@@ -17,3 +17,4 @@ See [client](https://github.com/michael-luo/twitch-stellar-bot/tree/master/clien
 - Amazon Web Services (EC2, RDS)
 - Vue.js
 - Node.js
+- Docker
