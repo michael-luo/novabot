@@ -11,3 +11,9 @@ It provides a basic set of chat commands and includes a dashboard to help enable
 ## Development
 
 See [client](https://github.com/michael-luo/twitch-stellar-bot/tree/master/client/README.md) and [server](https://github.com/michael-luo/twitch-stellar-bot/blob/master/server/README.md) development instructions.
+
+## Technologies
+
+- Amazon Web Services (EC2, RDS)
+- Vue.js
+- Node.js
