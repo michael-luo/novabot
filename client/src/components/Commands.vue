@@ -8,9 +8,10 @@
 
 <script>
 const commands = [
-  { command: 'See list of commands', description: 'See the list of NovaBot commands.', example: '!commands' },
-  { command: 'Check your balance', description: 'See your current withdrawable balance of cryptocurrencies.', example: '!balance' },
-  { command: 'Donate to streamer', description: 'Donate a specified amount of cryptocurrency to the streamer.', example: '!tip 5' }
+  { command: 'See list of commands.', description: 'See the list of NovaBot commands.', example: '!commands' },
+  { command: 'Check your balance.', description: 'See your current withdrawable balance of cryptocurrencies.', example: '!balance' },
+  { command: 'Donate to streamer.', description: 'Donate a specified amount of cryptocurrency to the streamer.', example: '!tip 5' },
+  { command: 'What is Stellar?', description: 'Provides information about Stellar Lumens cryptocurrency.', example: '!stellar' }
 ]
 
 export default {
