@@ -31,6 +31,14 @@ const history = require('connect-history-api-fallback');
 
 const app = express()
 
+u.prodOnly(() => {
+  const enforceHTTPS = (req, res, next) => {
+    if (req.headers['x-forwarded-proto'] === 'https') return next()
+    return res.redirect(301, `https://${path.join(req.hostname, req.url)}`)
+  }
+  app.use(enforceHTTPS)
+})
+
 // Set up favicon
 const favicon = require('serve-favicon')
 
@@ -50,12 +58,6 @@ u.devOrProd(
       origin: 'http://localhost:8080',
       credentials: true
     }))
-
-    const enforceHTTPS = (req, res, next) => {
-      if (req.headers['x-forwarded-proto'] === 'https') return next()
-      return res.redirect(301, `https://${path.join(req.hostname, req.url)}`)
-    }
-    app.use(enforceHTTPS)
   },
   () => app.use(cors())
 )
