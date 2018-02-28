@@ -50,14 +50,17 @@ u.devOrProd(
       origin: 'http://localhost:8080',
       credentials: true
     }))
+  },
+  () => {
+    app.use(cors())
 
+    // Redirect to HTTPS in production
     const enforceHTTPS = (req, res, next) => {
       if (req.headers['x-forwarded-proto'] === 'https') return next()
       return res.redirect(301, `https://${path.join(req.hostname, req.url)}`)
     }
     app.use(enforceHTTPS)
-  },
-  () => app.use(cors())
+  }
 )
 
 // Set up the API routes, auth, and business logic
