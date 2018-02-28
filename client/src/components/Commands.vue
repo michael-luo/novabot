@@ -1,6 +1,6 @@
 <template>
   <div class="commands">
-    <p style="color: white">Commands supported by NovaBot on <a href="https://twitch.tv">Twitch</a></p>
+    <p style="color: white">Commands supported by NovaBot on <a class="twitch" href="https://twitch.tv">Twitch</a></p>
     <b-table dark striped hover :items="commands"></b-table>
   </div>
 

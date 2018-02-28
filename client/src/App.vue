@@ -51,4 +51,8 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.twitch {
+  color: #6441A4
+}
 </style>
