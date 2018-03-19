@@ -4,7 +4,7 @@
       <p class="card-text"><strong>Current Balance:</strong> {{ balance }} <a href="https://coinmarketcap.com/currencies/stellar/">{{ currency }}</a> </p>
 
       <p>Deposit some Stellar Lumens and use NovaBot <router-link to="commands">commands</router-link> to donate crypto to other streamers.</p>
-      <p class="card-text"><strong>Stellar Deposit Address:</strong> GBTFU5DBANNJII73SF2S5ZOCLYJK73Y3774CYAE36W4SVMRJ6NR5ZEUT</p>
+      <p class="card-text"><strong>Stellar Deposit Address:</strong> GAYYRV2TANU7E2MBCYHZZO66RRDWCB4Z2ENQQNKPQV7KWHZSDFRQQUIW</p>
       <p class="card-text"><strong>Your Stellar Memo:</strong> {{user ? user.id : ''}}</p>
     </b-card>
   </div>
