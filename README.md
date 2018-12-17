@@ -1,7 +1,5 @@
 # twitch-stellar-bot
 
-NOTE: The production [website](http://novabot.me) is currently using Stellar TestNet
-
 The goal of NovaBot is to expand the number of donation mechanisms so that even the smaller content creators can earn a living on Twitch more easily.
 
 [NovaBot](http://novabot.me) is a chat bot integrated into the Twitch platform's chat. It facilitates the transfer of [Stellar Lumens](https://www.stellar.org/) (XLM), a cryptocurrency, between viewers of live-streams and the broadcaster.
