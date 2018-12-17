@@ -1,4 +1,6 @@
-# twitch-stellar-bot
+# novabot
+
+(Received Honorable Mention from the Stellar Development Foundation in April 2018)
 
 The goal of NovaBot is to expand the number of donation mechanisms so that even the smaller content creators can earn a living on Twitch more easily.
 
