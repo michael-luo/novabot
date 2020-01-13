@@ -8,6 +8,8 @@ Novabot is a chat bot integrated into the Twitch platform's chat. It facilitates
 
 It provides a basic set of chat commands and includes a dashboard to help enable NovaBot on broadcasters' channels to begin accepting XLM donations. Twitch users can deposit and withdraw XLM from the NovaBot dashboard.
 
+Note that this is an old project from 2018 and is no longer hosted online.
+
 ## Development
 
 See [client](https://github.com/michael-luo/twitch-stellar-bot/tree/master/client/README.md) and [server](https://github.com/michael-luo/twitch-stellar-bot/blob/master/server/README.md) development instructions.
