@@ -20,7 +20,7 @@
     "dotenv": "4.0.0",
     "express": "4.16.2",
     "knex": "0.14.2",
-    "morgan": "1.9.0",
+    "morgan": "1.9.1",
     "nodemon": "1.14.11",
     "passport": "0.4.0",
     "passport-twitch": "1.0.3",
